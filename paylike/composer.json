@@ -1,0 +1,10 @@
+{
+    "name": "drupal/commerce_paylike",
+    "type": "drupal-module",
+    "description": "Provides a Paylike payment method for Drupal Commerce.",
+    "homepage": "https://paylike.io/plugins",
+    "require": {
+        "drupal/commerce": "^2.14",
+        "paylike/php-api": "^1.0.5"
+    }
+}

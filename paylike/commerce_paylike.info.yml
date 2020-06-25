@@ -1,0 +1,9 @@
+name: Commerce Paylike
+type: module
+description: 'Provides a Paylike payment method for Drupal Commerce.'
+package: Commerce (contrib)
+core: 8.x
+dependencies:
+  - commerce:commerce_payment
+
+version: '8.x-1.0'

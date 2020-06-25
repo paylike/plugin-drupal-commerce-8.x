@@ -1,0 +1,19 @@
+paylike:
+  remote: https://github.com/paylike/php-api
+  version: "1.0.5"
+  license:
+    name: MIT
+    url: https://github.com/paylike/php-api/blob/master/LICENSE.md
+    gpl-compatible: true
+  js:
+    "https://sdk.paylike.io/3.js": { minified: true }
+
+form:
+  version: VERSION
+  js:
+    commerce_paylike.js: {}
+  dependencies:
+    - core/jquery
+    - core/drupal
+    - core/jquery.once
+    - commerce_paylike/paylike

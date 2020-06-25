@@ -1,0 +1,36 @@
+<?php
+
+namespace Drupal\commerce_paylike\Plugin\Commerce\PaymentGateway;
+
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\OnsitePaymentGatewayInterface;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\SupportsAuthorizationsInterface;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\SupportsRefundsInterface;
+use Drupal\commerce_payment\Plugin\Commerce\PaymentGateway\SupportsUpdatingStoredPaymentMethodsInterface;
+
+/**
+ * Provides the interface for the example_onsite payment gateway.
+ *
+ * The OnsitePaymentGatewayInterface is the base interface which all on-site
+ * gateways implement. The other interfaces signal which additional capabilities
+ * the gateway has. The gateway plugin is free to expose additional methods,
+ * which would be defined below.
+ */
+interface PaylikeInterface extends OnsitePaymentGatewayInterface, SupportsAuthorizationsInterface, SupportsRefundsInterface {
+
+  /**
+   * Get the Paylike API public key.
+   *
+   * @return string
+   *   The Paylike API public key.
+   */
+  public function getPublicKey();
+
+  /**
+   * Get the Paylike API private key.
+   *
+   * @return string
+   *   The Paylike API private key.
+   */
+  public function getPrivateKey();
+
+}
