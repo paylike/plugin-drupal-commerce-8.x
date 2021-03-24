@@ -1,11 +1,6 @@
 <?php
 
 /**
- * @file
- * Contains install and update functions for Commerce Stripe.
- */
-
-/**
  * Implements hook_requirements().
  */
 function commerce_paylike_requirements($phase) {

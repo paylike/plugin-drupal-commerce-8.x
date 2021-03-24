@@ -73,7 +73,7 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
         );
       }
 
-      $commerceInfo = system_get_info('module', 'commerce');
+      $commerceInfo = \Drupal::service('extension.list.module')->getExtensionInfo('commerce');
       $addressInfo = $this->getAddressInfo($order);
 
       // Paylike popup settings
@@ -84,7 +84,6 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
           'amount' => $plugin->toMinorUnits($order->getTotalPrice()),
           'locale' => \Drupal::languageManager()->getCurrentLanguage()->getId(),
           'title' => $plugin->getPopupTitle(),
-          'descriptor' => t("Order #@order_id", ["@order_id" => $order->id()]),
           'custom' => [
             'email' => $order->getEmail(),
             'orderId' => $order->id(),
@@ -93,7 +92,6 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
               'email' => $order->getEmail(),
               'IP' => $order->getIpAddress(),
               'name' => $addressInfo['name'],
-              'phoneNo' => '', // No phone information
               'address' => $addressInfo['address'],
             ],
             'platform' => [
