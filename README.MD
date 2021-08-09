@@ -9,6 +9,8 @@ Released under the GPL V3 license: https://opensource.org/licenses/GPL-3.0
 
 [![Last succesfull test](https://log.derikon.ro/api/v1/log/read?tag=drupalcommerce8&view=svg&label=DrupalCommerce&key=ecommerce&background=00b4ff)](https://log.derikon.ro/api/v1/log/read?tag=drupalcommerce8&view=html)
 
+    - Last tested with: commerce 8.2.26 & Drupal 8.9.17
+
 *The plugin has been tested with most versions of Drupal Commerce at every iteration. We recommend using the latest version of Drupal Commerce, but if that is not possible for some reason, test the plugin with your Drupal Commerce version and it would probably function properly.*
 
 
@@ -22,20 +24,20 @@ Once you have installed Drupal Commerce on your Drupal setup, follow these simpl
    1. Add the payment gateway from `admin/commerce/config/payment-gateways` and select "Paylike" under the Plugin section
    1. Set transaction mode to either Auth+Capture or Auth only under "Payment process" on `admin/commerce/config/checkout-flows/manage/default
 `
-   
+
 
 ## Updating settings
 
 Under the Paylike payment method settings, you can:
  * Update the payment method text in the payment gateways list
  * Update the payment method description in the payment gateways list
- * Update the title that shows up in the payment popup 
+ * Update the title that shows up in the payment popup
  * Add test/live keys
  * Set payment mode (test/live)
 
- 
+
  ## How to
- 
+
  1. Capture
  * In Authorization+Capture mode, the orders are captured automatically
  * In Authorization only mode you can capture an order by using the Payments tab from an order. If available the capture operation will show up. (admin/commerce/orders/ORDER_ID/payments)
