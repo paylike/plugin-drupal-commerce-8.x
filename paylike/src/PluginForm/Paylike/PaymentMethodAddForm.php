@@ -107,7 +107,6 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
               'email' => $order->getEmail(),
               'IP' => $order->getIpAddress(),
               'name' => $addressInfo['name'],
-              'phoneNo' => '', // No phone information
               'address' => $addressInfo['address'],
             ],
             'platform' => [
