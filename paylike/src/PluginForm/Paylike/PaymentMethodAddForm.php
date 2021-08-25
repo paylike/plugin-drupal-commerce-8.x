@@ -77,7 +77,7 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
         );
       }
 
-      $commerceInfo = \Drupal::service('extension.list.commerce')->getExtensionInfo();
+      $commerceInfo = \Drupal::service('extension.list.module')->getExtensionInfo('commerce');
       $addressInfo = $this->getAddressInfo($order);
       $currencyCode = $order->getTotalPrice()->getCurrencyCode();
       /** Get all currencies attributes using Paylike\Data\Currencies class. */
