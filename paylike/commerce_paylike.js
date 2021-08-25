@@ -20,10 +20,10 @@
 
         $(this).click(function (event) {
           event.preventDefault();
-          var paylike = Paylike(drupalSettings.commercePaylike.publicKey),
+          var paylike = Paylike({key: drupalSettings.commercePaylike.publicKey}),
             config = drupalSettings.commercePaylike.config;
 
-          paylike.popup(config, handleResponse);
+          paylike.pay(config, handleResponse);
         });
       });
     }

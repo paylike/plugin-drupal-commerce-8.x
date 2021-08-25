@@ -11,8 +11,12 @@ use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Routing\RouteMatchInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Paylike\Data\Currencies;
 
 class PaymentMethodAddForm extends BasePaymentMethodAddForm {
+
+  /** Paylike plugin version. */
+  const PAYLIKE_PLUGIN_VERSION = '1.2.0';
 
   /**
    * The route match.
@@ -64,7 +68,7 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
     if ($order = $this->routeMatch->getParameter('commerce_order')) {
       $products = [];
       foreach ($order->getItems() as $orderItem) {
-        $products[$orderItem->id()] = array(
+        $products[] = array(
           'id' => $orderItem->id(),
           'title' => $orderItem->label(),
           'price' => (string) $orderItem->getUnitPrice(),
@@ -73,18 +77,28 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
         );
       }
 
-      $commerceInfo = system_get_info('module', 'commerce');
+      $commerceInfo = \Drupal::service('extension.list.commerce')->getExtensionInfo();
       $addressInfo = $this->getAddressInfo($order);
+      $currencyCode = $order->getTotalPrice()->getCurrencyCode();
+      /** Get all currencies attributes using Paylike\Data\Currencies class. */
+      $allCurrencies = (new Currencies)->all();
+      /** Extract exponent using order currency code. */
+      $exponent = isset($allCurrencies[$currencyCode]) ? ($allCurrencies[$currencyCode]['exponent']) : (null);
+      $amount = $plugin->toMinorUnits($order->getTotalPrice());
 
       // Paylike popup settings
       $element['#attached']['drupalSettings']['commercePaylike'] = [
         'publicKey' => $plugin->getPublicKey(),
         'config' => [
-          'currency' => $order->getTotalPrice()->getCurrencyCode(),
-          'amount' => $plugin->toMinorUnits($order->getTotalPrice()),
+          /** Check if plugin mode is test and set true. If not, set false. */
+          'test' => ('test' == $plugin->getMode()) ? (true) : (false),
+          'amount' => [
+            'currency' => $currencyCode,
+            'exponent' => $exponent,
+            'value' => $amount,
+          ],
           'locale' => \Drupal::languageManager()->getCurrentLanguage()->getId(),
           'title' => $plugin->getPopupTitle(),
-          'descriptor' => t("Order #@order_id", ["@order_id" => $order->id()]),
           'custom' => [
             'email' => $order->getEmail(),
             'orderId' => $order->id(),
@@ -103,6 +117,9 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
             'ecommerce' => [
               'name' => 'Drupal Commerce',
               'version' => $commerceInfo['version'],
+            ],
+            'paylikePluginVersion' => [
+              'version' => self::PAYLIKE_PLUGIN_VERSION,
             ],
           ],
         ],
