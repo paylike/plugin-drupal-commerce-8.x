@@ -68,7 +68,7 @@ class PaymentMethodAddForm extends BasePaymentMethodAddForm {
     if ($order = $this->routeMatch->getParameter('commerce_order')) {
       $products = [];
       foreach ($order->getItems() as $orderItem) {
-        $products[] = array(
+        $products[$orderItem->id()] = array(
           'id' => $orderItem->id(),
           'title' => $orderItem->label(),
           'price' => (string) $orderItem->getUnitPrice(),
