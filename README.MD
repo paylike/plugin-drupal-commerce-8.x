@@ -9,7 +9,7 @@ Released under the GPL V3 license: https://opensource.org/licenses/GPL-3.0
 
 [![Last succesfull test](https://log.derikon.ro/api/v1/log/read?tag=drupalcommerce8&view=svg&label=DrupalCommerce&key=ecommerce&background=00b4ff)](https://log.derikon.ro/api/v1/log/read?tag=drupalcommerce8&view=html)
 
-    - Last tested with: commerce 8.x-2.26 & Drupal 8.9.18
+    - Last tested with: commerce 8.x-2.27 & Drupal 8.9.19
 
 *The plugin has been tested with most versions of Drupal Commerce at every iteration. We recommend using the latest version of Drupal Commerce, but if that is not possible for some reason, test the plugin with your Drupal Commerce version and it would probably function properly.*
 
