@@ -1,12 +1,12 @@
 paylike:
   remote: https://github.com/paylike/php-api
-  version: "1.0.5"
+  version: "1.0.8"
   license:
     name: MIT
     url: https://github.com/paylike/php-api/blob/master/LICENSE.md
     gpl-compatible: true
   js:
-    "https://sdk.paylike.io/6.js": { minified: true }
+    "https://sdk.paylike.io/10.js": { minified: true }
 
 form:
   version: VERSION
