@@ -24,7 +24,8 @@ class DrupalCommerce8QuickTest extends AbstractTestCase {
 	public function testUsdPaymentBeforeOrderInstant() {
 		$this->runner = new DrupalCommerce8Runner( $this );
 		$this->runner->ready( array(
-				'capture_mode'           => 'Instant'
+				'currency'     => 'USD',
+				'capture_mode' => 'instant',
 			)
 		);
 	}

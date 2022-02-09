@@ -286,7 +286,7 @@ class DrupalCommerce8TestHelper {
 
 		return $this;
 	}
-	public function waitforElementToBeClickeble($query) {
+	public function waitforElementToBeClickable($query) {
         $element = $this->getElement( $query );
         $this->wd->wait( 10, 1000 )->until(
             WebDriverExpectedCondition::elementToBeClickable( $element )

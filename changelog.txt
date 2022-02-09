@@ -1,0 +1,20 @@
+# Changelog
+All notable changes to this project will be documented in this file.
+
+## 1.2.0:
+### Added
+- "changelog.txt" file
+- module version to be sent with each transaction
+### Changed
+- readme.md file
+- js SDK version to '10.js' in paylike\commerce_paylike.libraries.yml file
+- modified some logic to work with SDK v10
+
+## 1.1.0:
+### Changed
+- js SDK version from '3.js' to '6.js' in paylike\commerce_paylike.libraries.yml file
+
+
+## 1.0.0:
+### Added
+- Initial version
