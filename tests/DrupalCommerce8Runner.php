@@ -71,7 +71,7 @@ class DrupalCommerce8Runner extends DrupalCommerce8TestHelper
     public function changeCurrency() {
         $this->goToPage("product/1/variations", ".edit a");
         $this->click(".edit a");
-        $this->waitforElementToBeClickeble(".form-type-commerce-price #edit-price-0-currency-code");
+        $this->waitforElementToBeClickable(".form-type-commerce-price #edit-price-0-currency-code");
         $this->selectValue(".form-type-commerce-price #edit-price-0-currency-code", "$this->currency");
         $this->click("#edit-submit");
         $this->waitForElement(".messages--status");
@@ -85,7 +85,7 @@ class DrupalCommerce8Runner extends DrupalCommerce8TestHelper
         $this->goToPage('commerce/config/checkout-flows', '.edit a', true);
         $this->click(".edit a");
         $this->click("#edit-configuration-panes-payment-process-configuration-edit");
-        $this->waitforElementToBeClickeble(".form-item-configuration-panes-payment-process-configuration-capture");
+        $this->waitforElementToBeClickable(".form-item-configuration-panes-payment-process-configuration-capture");
         if ($this->capture_mode == "Delayed") {
             $this->click("//label[contains(text(), 'Authorize only (requires manual capture after checkout)')]");
         } else {
@@ -285,8 +285,10 @@ class DrupalCommerce8Runner extends DrupalCommerce8TestHelper
     public function finalPaylike() {
         $this->popupPaylike();
         $this->waitElementDisappear(".paylike.overlay ");
-        $this->waitforElementToBeClickeble(".content #edit-actions-next");
+        $this->waitforElementToBeClickable(".content #edit-actions-next");
         $this->click("#edit-actions-next");
+		$this->waitforElementToBeClickable(".content #edit-actions-next");
+		$this->click("#edit-actions-next");
         $completedValue = $this->getText(".page-title");
         // because the title of the page matches the checkout title, we need to use the order received class on body
         $this->main_test->assertEquals('Complete', $completedValue);
@@ -314,7 +316,8 @@ class DrupalCommerce8Runner extends DrupalCommerce8TestHelper
      * @throws TimeOutException
      */
     public function selectOrder() {
-        $this->goToPage("commerce/orders", ".views-field-operations .edit ", true);
+        $this->goToPage("commerce/orders", "#block-seven-local-actions", true);
+        $this->click(".dropbutton-arrow");
         $this->click(".edit a");
         $this->waitforElement(".tabs");
         $this->click(".tabs.primary  li:last-child");
