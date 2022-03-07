@@ -9,7 +9,7 @@ describe('paylike plugin version log remotely', () => {
      * Go to backend site admin
      */
     before(() => {
-        cy.goToPage(Cypress.env('ENV_ADMIN_URL'));
+        cy.goToPage(TestMethods.StoreUrl + '/user/login');
         TestMethods.loginIntoAdminBackend();
     });
 
