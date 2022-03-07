@@ -16,7 +16,7 @@ use Paylike\Data\Currencies;
 class PaymentMethodAddForm extends BasePaymentMethodAddForm {
 
   /** Paylike plugin version. */
-  const PAYLIKE_PLUGIN_VERSION = '1.4.0';
+  const PAYLIKE_PLUGIN_VERSION = '8.x-1.4.1';
 
   /**
    * The route match.
