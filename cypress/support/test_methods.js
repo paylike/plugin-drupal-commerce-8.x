@@ -226,16 +226,16 @@ export var TestMethods = {
             cy.get('@shopVersion').then(shopVersion => {
                 cy.get('@pluginVersion').then(pluginVersion => {
 
-                    // cy.request('GET', this.RemoteVersionLogUrl, {
-                    //     key: shopVersion,
-                    //     tag: this.ShopName,
-                    //     view: 'html',
-                    //     framework: frameworkVersion,
-                    //     ecommerce: shopVersion,
-                    //     plugin: pluginVersion
-                    // }).then((resp) => {
-                    //     expect(resp.status).to.eq(200);
-                    // });
+                    cy.request('GET', this.RemoteVersionLogUrl, {
+                        key: shopVersion,
+                        tag: this.ShopName,
+                        view: 'html',
+                        framework: frameworkVersion,
+                        ecommerce: shopVersion,
+                        plugin: pluginVersion
+                    }).then((resp) => {
+                        expect(resp.status).to.eq(200);
+                    });
                 });
             });
         });
