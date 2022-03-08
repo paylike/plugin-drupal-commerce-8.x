@@ -210,39 +210,32 @@ export var TestMethods = {
         /** Go to Virtuemart config page. */
         cy.goToPage(this.ModulesAdminUrl);
 
-        /** Get framework version. */
-        cy.get('#edit-modules-core tbody tr').first().then($frameworkVersion => {
-            var frameworkVersion = $frameworkVersion.children('td:nth-child(3)').text();
-            cy.wrap(frameworkVersion).as('frameworkVersion');
-        });
+        /** Get framework, shop and payment plugin version. */
+        cy.document().then($doc => {
+            var frameworkVersion = $doc.querySelectorAll('tr[data-drupal-selector*="edit-module"] .admin-requirements')[1].innerText
+            var shopVersion = $doc.querySelectorAll('tr[data-drupal-selector="edit-modules-commerce"] .admin-requirements')[1].innerText
+            var pluginVersion = $doc.querySelectorAll(`tr[data-drupal-selector*="commerce-${this.PaylikeName}"] .admin-requirements`)[1].innerText
 
-        /** Get shop version. */
-        cy.get('label[for="edit-modules-commerce-commerce-enable"]').closest('tr').then($shopVersion => {
-            var shopVersion = $shopVersion.children('td:nth-child(3)').text();
-            cy.wrap(shopVersion).as('shopVersion');
-        });
-
-        /** Get paylike version. */
-        cy.get('label[for="edit-modules-commerce-contrib-commerce-paylike-enable"]').closest('tr').then($paylikeVersion => {
-            var paylikeVersion = $paylikeVersion.children('td:nth-child(3)').text();
-            cy.wrap(paylikeVersion).as('paylikeVersion');
+            cy.wrap(frameworkVersion.replace('Version: ', '')).as('frameworkVersion');
+            cy.wrap(shopVersion.replace('Version: ', '')).as('shopVersion');
+            cy.wrap(pluginVersion.replace('Version: ', '')).as('pluginVersion');
         });
 
         /** Get global variables and make log data request to remote url. */
         cy.get('@frameworkVersion').then(frameworkVersion => {
             cy.get('@shopVersion').then(shopVersion => {
-                cy.get('@paylikeVersion').then(paylikeVersion => {
+                cy.get('@pluginVersion').then(pluginVersion => {
 
-                    cy.request('GET', this.RemoteVersionLogUrl, {
-                        key: shopVersion,
-                        tag: this.ShopName,
-                        view: 'html',
-                        framework: frameworkVersion,
-                        ecommerce: shopVersion,
-                        plugin: paylikeVersion
-                    }).then((resp) => {
-                        expect(resp.status).to.eq(200);
-                    });
+                    // cy.request('GET', this.RemoteVersionLogUrl, {
+                    //     key: shopVersion,
+                    //     tag: this.ShopName,
+                    //     view: 'html',
+                    //     framework: frameworkVersion,
+                    //     ecommerce: shopVersion,
+                    //     plugin: pluginVersion
+                    // }).then((resp) => {
+                    //     expect(resp.status).to.eq(200);
+                    // });
                 });
             });
         });
