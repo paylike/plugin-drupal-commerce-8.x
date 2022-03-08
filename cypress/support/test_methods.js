@@ -12,10 +12,10 @@ export var TestMethods = {
     RemoteVersionLogUrl: Cypress.env('REMOTE_LOG_URL'),
 
     /** Construct some variables to be used bellow. */
-    ShopName: 'drupalcommerce7',
+    ShopName: 'drupalcommerce8',
     PaylikeName: 'paylike',
-    ShopAdminUrl: '/commerce/config/currency', // used for change currency
-    PaymentMethodsAdminUrl: '/commerce/config/payment-methods',
+    ShopAdminUrl: '/commerce/config/currencies', // used for change currency
+    CheckoutFlowsAdminUrl: '/commerce/config/checkout-flows/manage/default',
     OrdersPageAdminUrl: '/commerce/orders',
     ModulesAdminUrl: '/modules',
 
@@ -31,21 +31,20 @@ export var TestMethods = {
      * @param {String} captureMode
      */
     changePaylikeCaptureMode(captureMode) {
-        /** Go to payments page, and select Paylike. */
-        cy.goToPage(this.PaymentMethodsAdminUrl);
+        /** Go to payment method page. */
+        cy.goToPage(this.CheckoutFlowsAdminUrl);
 
-        /** Select paylike & config its settings. */
-        cy.get(`a[href*=${this.PaylikeName}]`).click();
-        cy.get('.rules-element-label a').click();
+        /** Edit config. */
+        cy.get('input[id*="-payment-process-configuration-edit"]').click();
 
         /** Change capture mode & save. */
         if ('Instant' === captureMode) {
-            cy.get('input[id*=type-auth-capture]').click();
+            cy.get('input[id*="-payment-process-configuration-capture-1"]').click();
         } else if ('Delayed' === captureMode) {
-            cy.get('input[id*=type-authorize]').click();
+            cy.get('input[id*="-payment-process-configuration-capture-0"]').click();
         }
 
-        cy.get('#edit-submit').click();
+        cy.get('input[id*="-payment-process-configuration-actions-save"]').click();
     },
 
     /**
@@ -186,15 +185,17 @@ export var TestMethods = {
     },
 
     /**
-     * Change shop currency from admin
+     * Change product currency
      */
-    changeShopCurrencyFromAdmin(currency) {
-        it(`Change shop currency from admin to "${currency}"`, () => {
-            /** Go to edit shop page. */
-            cy.goToPage(this.ShopAdminUrl);
+    changeProductCurrency(currency) {
+        it(`Change product currency to "${currency}"`, () => {
+            /** Go to edit first product variation to edit. */
+            // cy.goToPage(this.StoreUrl + '/product/1/variations');
+            // cy.get('.edit a').click();
+            cy.goToPage(this.StoreUrl + '/product/1/variations/1/edit');
 
             /** Select currency & save. */
-            cy.selectOptionContaining('#edit-commerce-default-currency', currency);
+            cy.get('#edit-price-0-currency-code').select(currency);
             cy.get('#edit-submit').click();
         });
     },

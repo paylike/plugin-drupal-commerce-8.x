@@ -36,9 +36,9 @@ describe('paylike plugin quick test', () => {
     });
 
     /**
-     * Change shop currency
+     * Change product currency
      */
-    TestMethods.changeShopCurrencyFromAdmin(currency);
+    TestMethods.changeProductCurrency(currency);
 
     /** Pay and process order. */
     /** Capture */
