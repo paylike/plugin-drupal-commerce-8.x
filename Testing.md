@@ -1,30 +1,52 @@
-#Testing
+#Testing with Cypress
 
-As you can see the plugin is bundled with selenium testing on this repository. You can use the tests, if you have some experience with testing it could be helpful. 
-*DO NOT USE IN PRODUCTION, THE TESTS MODIFY SETTINGS AND CREATE ORDERS*
+As you can see the plugin is bundled with Cypress testing on this repository. You can use the tests, if you have some experience with testing.
+
+***DO NOT USE IN PRODUCTION, THE TESTS MODIFY SETTINGS AND CREATE ORDERS***
 
 ## Requirements
 
-* A Drupal Commerce 8 installation is required, in which you need to have the sample theme installed. 
-* You also need to have an admin account for which you set the credentials in the .env file
-* Make sure all the tested currencies are enabled
+* A framework/shop installation is required, in which you need to have the sample theme installed and products displayed on the homepage.
+* You need to have Paylike module installed and configured (**test keys** required)
+* You need to have some other currencies configured in store, then set them in `cypress.env.json` file (these will be used to make payments with every currency specified)
+* You also need to have an account with previous purchases for which you set the credentials in the `cypress.env.json` file
+* For changing currency in frontend you need to have installed commerce-multicurrency module, available at [drupal.org](https://www.drupal.org/project/commerce_multicurrency/releases)
+* *For testing purpose, product stock management and sending order emails need to be disabled (if applicable).*
 
 ## Getting started
 
-1. Follow 1 and 2 from the [Steward readme page](https://github.com/lmc-eu/steward#getting-started)
-2. Create an env file in the root folder and add the following:
-`
-ENVIRONMENT_URL="https://drupalcommerce8.url"
-ENVIRONMENT_USER="username"
-ENVIRONMENT_PASS="yourpassword"
-ADMIN_PREFIX="admin"
-`
+1. Run following commands into plugin folder (as in this repo)
 
-3. Start the testing server. See
-[Steward readme page](https://github.com/lmc-eu/steward#4-run-your-tests)
-4. Run  ./vendor/bin/steward run staging chrome --group="drupalcommerce_test" -vv for the short test
-5. Run  ./vendor/bin/steward run staging chrome -vv to go trough all the available tests.
+    ```bash
+    npm install cypress --save-dev
+    ```
 
-## Problems
+2. Copy and rename `cypress.env.json.example` file in the root folder and fill the data as explained bellow:
+```json
+{
+    "ENV_HTTP_AUTH_ENABLED": false, // 'true' if you have HTTP auth when accessing website
+    "ENV_HTTP_USER": "", // if you have HTTP auth when accessing website
+    "ENV_HTTP_PASS": "",
+    "ENV_ADMIN_URL": "", // like http(s)://baseUrl/administrator
+    "ENV_CLIENT_USER": "", // frontend user
+    "ENV_CLIENT_PASS": "",
+    "ENV_ADMIN_USER": "", // admin user
+    "ENV_ADMIN_PASS": "",
+    "REMOTE_LOG_URL": "", // if you want to send log information about framework/shop & paylike module versions
+    "ENV_CURRENCY_TO_CHANGE_WITH": "USD",
+    "ENV_CURRENCIES_TO_TEST": ["USD", "EUR"], // currencies used to make payments with in Full test
+    "ENV_CARD_NUMBER": 4100000000000000,
+    "ENV_CARD_EXPIRY": 1226,
+    "ENV_CARD_CVV": 654
+}
+```
 
-Since this is a frontend test, its not always consistent, due to delays or some glitches regarding overlapping elements. If you can't get over an issue please open an issue and I'll take a look. 
+3. Start the Cypress testing server.
+    ```bash
+    npx cypress open
+    ```
+4. In the interface, we can choose which test to run
+
+## Getting Problems?
+
+Since this is a frontend test, its not always consistent, due to delays or some glitches regarding overlapping elements. If you can't get over an issue please open an issue and we'll take a look.
