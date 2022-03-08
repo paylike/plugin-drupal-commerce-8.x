@@ -37,6 +37,14 @@
     } else {
         cy.visit(pageUrl);
     }
+
+    if (!pageUrl.includes('login')) {
+        /** Click on toggle toolbar vertical, to not cover elements. */
+        /** Ubercart 8 specific code. */
+        cy.get('.toolbar-lining .toolbar-icon-toggle-vertical').first().click();
+        cy.wait(200);
+    }
+
 });
 
 /**
