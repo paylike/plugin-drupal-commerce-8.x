@@ -45,6 +45,9 @@ export var TestMethods = {
         }
 
         cy.get('input[id*="-payment-process-configuration-actions-save"]').click();
+
+        /** Save. */
+        cy.get('#edit-actions-submit').click();
     },
 
     /**
@@ -74,40 +77,33 @@ export var TestMethods = {
         /** Go to store frontend. */
         cy.goToPage(this.StoreUrl);
 
-        /** Add to cart random product. */
-        var randomInt = PaylikeTestHelper.getRandomInt(/*max*/ 1);
-        cy.get('.commerce-add-to-cart input[id*=edit-submit]').eq(randomInt).click();
+        /** Add to cart specific product. */
+        cy.get('.button--add-to-cart').first().click();
 
         /** Go to cart. */
-        cy.get('.status  a').click();
+        cy.get('.messages--status  a').click();
 
         /** Proceed to checkout. */
         cy.get('#edit-checkout').click();
 
         /** Fill in address fields. */
-        cy.get('input[id*=name-line]').clear().type('John Doe');
-        cy.get('input[id*=thoroughfare]').clear().type('Street no 1');
-        cy.get('input[id*=locality]').clear().type('City');
-
-        /** Next checkout step. */
-        cy.get('.checkout-continue.form-submit').click();
-
-        /** Choose Paylike. */
-        cy.get(`.form-type-radio > input[id*=${this.PaylikeName}]`).click();
+        // cy.get('input[id*=given-name--]').clear().type('John');
+        // cy.get('input[id*=family-name--]').clear().type('Doe');
+        // cy.get('input[id*=address-line1--]').clear().type('Street no 1');
+        // cy.get('input[id*=postal-code--]').clear().type('000000');
+        // cy.get('input[id*=locality--]').clear().type('City');
 
         /** Get & Verify amount. */
-        cy.get('.commerce-price-formatted-components .component-total').then(($totalAmount) => {
+        cy.get('.order-total-line__total:nth-child(2)').then(($totalAmount) => {
             cy.window().then(win => {
                 var expectedAmount = PaylikeTestHelper.filterAndGetAmountInMinor($totalAmount, currency);
-                var orderTotalAmount = Number(win.Drupal.settings.commerce_paylike.config.amount.value);
+                var orderTotalAmount = Number(win.drupalSettings.commercePaylike.config.amount.value);
                 expect(expectedAmount).to.eq(orderTotalAmount);
             });
         });
 
-        cy.wait(500);
-
         /** Show paylike popup. */
-        cy.get('#edit-commerce-payment-payment-details-paylike-button').click();
+        cy.get('#edit-payment-information-add-payment-method-payment-details-paylike-button').click();
 
         /**
          * Fill in Paylike popup.
@@ -117,9 +113,12 @@ export var TestMethods = {
         cy.wait(500);
 
         /** Go to order confirmation. */
-        cy.get('#edit-continue').click();
+        cy.get('#edit-actions-next').click();
 
-        cy.get('h1#page-title').should('be.visible').contains('Checkout complete');
+        /** Confirm order. */
+        cy.get('#edit-actions-next').click();
+
+        cy.get('h1.page-title').should('be.visible').contains('Complete');
     },
 
     /**
@@ -132,7 +131,7 @@ export var TestMethods = {
         cy.goToPage(this.OrdersPageAdminUrl);
 
         /** Click on first (latest in time) order from orders table. */
-        cy.get('.commerce-order-payment a').first().click();
+        cy.get('.view.dropbutton-action a').first().click();
 
         /**
          * Take specific action on order
@@ -146,24 +145,27 @@ export var TestMethods = {
      * @param {Boolean} partialAmount
      */
      paylikeActionOnOrderAmount(paylikeAction, partialAmount = false) {
+        /** Select Payments tab. */
+        cy.get('.tabs__tab').last().click();
+
         switch (paylikeAction) {
             case 'capture':
                 /** Capture transaction. */
-                cy.get('.commerce-payment-transaction-capture a').click();
+                cy.get('.capture a').click();
                 if (partialAmount) {
-                    cy.get('#edit-amount').then($editAmountInput => {
+                    cy.get('#edit-payment-amount-number').then($editAmountInput => {
                         var totalAmount = $editAmountInput.val();
                         /** Subtract 10 major units from amount. */
                         $editAmountInput.val(Math.round(totalAmount - 10));
                     });
                 }
-                cy.get('#edit-submit').click();
+                cy.get('#edit-actions-submit').click();
                 break;
             case 'refund':
                 /** Refund transaction. */
-                cy.get('.commerce-payment-transaction-refund a').click();
+                cy.get('.refund a').click();
                 if (partialAmount) {
-                    cy.get('#edit-amount').then($editAmountInput => {
+                    cy.get('#edit-payment-amount-number').then($editAmountInput => {
                         /**
                          * Put 15 major units to be refunded.
                          * Premise: any product must have price >= 15.
@@ -171,17 +173,18 @@ export var TestMethods = {
                         $editAmountInput.val(15);
                     });
                 }
-                cy.get('#edit-submit').click();
+                cy.get('#edit-actions-submit').click();
                 break;
             case 'void':
                 /** Void transaction. */
-                cy.get('.commerce-payment-transaction-void a').click();
-                cy.get('#edit-submit').click();
+                cy.get('.dropbutton-arrow').click();
+                cy.get('.void a').click();
+                cy.get('#edit-actions-submit').click();
                 break;
         }
 
         /** Check if success message. */
-        cy.get('.views-row-last .views-field-message').should('contain', 'succeeded');
+        cy.get('.messages.messages--statuse').should('be.visible');
     },
 
     /**
