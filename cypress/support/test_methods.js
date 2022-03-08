@@ -176,15 +176,19 @@ export var TestMethods = {
                 cy.get('#edit-actions-submit').click();
                 break;
             case 'void':
+                /** The link is not visible, so extract it and go to void page. */
+                cy.get('.void a').then(($voidLink) => {
+                    cy.window().then($win => {
+                        $win.location.pathname = $voidLink.attr('href')
+                    });
+                });
                 /** Void transaction. */
-                cy.get('.dropbutton-arrow').click();
-                cy.get('.void a').click();
                 cy.get('#edit-actions-submit').click();
                 break;
         }
 
         /** Check if success message. */
-        cy.get('.messages.messages--statuse').should('be.visible');
+        cy.get('.messages.messages--status').should('be.visible');
     },
 
     /**
