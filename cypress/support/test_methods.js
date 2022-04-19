@@ -46,6 +46,9 @@ export var TestMethods = {
 
         cy.get('input[id*="-payment-process-configuration-actions-save"]').click();
 
+        /** Wait the settings to update. */
+        cy.wait(1000);
+
         /** Save. */
         cy.get('#edit-actions-submit').click();
     },
