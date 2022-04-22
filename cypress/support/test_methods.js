@@ -46,6 +46,9 @@ export var TestMethods = {
 
         cy.get('input[id*="-payment-process-configuration-actions-save"]').click();
 
+        /** Wait the settings to update. */
+        cy.wait(1000);
+
         /** Save. */
         cy.get('#edit-actions-submit').click();
     },
@@ -110,15 +113,13 @@ export var TestMethods = {
          */
          PaylikeTestHelper.fillAndSubmitPaylikePopup();
 
-        cy.wait(500);
-
         /** Go to order confirmation. */
-        cy.get('#edit-actions-next').click();
+        cy.get('#edit-actions-next', {timeout: 10000}).click();
 
         /** Confirm order. */
-        cy.get('#edit-actions-next').click();
+        cy.get('#edit-actions-next', {timeout: 10000}).click();
 
-        cy.get('h1.page-title').should('be.visible').contains('Complete');
+        cy.get('h1.page-title', {timeout: 10000}).should('be.visible').contains('Complete');
     },
 
     /**
